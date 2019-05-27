@@ -178,6 +178,18 @@ void updateX4(void) {
 	ui16_x4_value = ui16_adc_read_x4_value();
 }
 
+//added by DerBastler - Light		
+void updateLight(void) {
+	if (((light_stat &1) != 1)&& ((light_stat &128) == 128)) {
+		light_pin_set();
+		light_stat = (light_stat&~1) | 1;
+	}else if (((light_stat &1) == 1)&& ((light_stat &128)!= 128)) {
+		light_pin_reset();
+		light_stat = (light_stat&~1) | 0;
+	}
+}
+
+
 void updateRequestedTorque(void) {
 
 	ui16_momentary_throttle = (uint16_t) map(ui8_adc_read_throttle(), ADC_THROTTLE_MIN_VALUE, ADC_THROTTLE_MAX_VALUE, 0, SETPOINT_MAX_VALUE); //read in recent throttle value for throttle override
